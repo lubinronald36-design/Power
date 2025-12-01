@@ -61,7 +61,7 @@
 <body>
 
 <!-- BACKGROUND MUSIC -->
-<audio id="music" src="god.mp3" autoplay loop muted></audio>
+<audio id="music" src="lord.mp3" playsinline loop></audio>
 
 <div class="container">
 
@@ -97,22 +97,28 @@ and His love covers you forever. ✨
 <script>
 const music = document.getElementById("music");
 
-// Try autoplay (desktop works)
-music.play().then(() => {
-    setTimeout(() => { music.muted = false; }, 300);
+// Desktop autoplay
+window.addEventListener("load", () => {
+    const playPromise = music.play();
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            // Desktop works
+        }).catch(() => {
+            // Mobile needs click
+        });
+    }
 });
 
-// Force mobile to unmute on any touch
-function enableSound() {
-    music.muted = false;
+// 100% Mobile Fix — works on iPhone + Android
+function startMusic() {
     music.play();
-    document.removeEventListener("touchstart", enableSound);
-    document.removeEventListener("click", enableSound);
+    document.removeEventListener("touchstart", startMusic);
+    document.removeEventListener("click", startMusic);
 }
 
-document.addEventListener("touchstart", enableSound);
-document.addEventListener("click", enableSound);
-});
+// FIRST touch anywhere = music starts
+document.addEventListener("touchstart", startMusic);
+document.addEventListener("click", startMusic);
 </script>
 
 </body>
