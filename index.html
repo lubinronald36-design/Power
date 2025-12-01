@@ -61,7 +61,7 @@
 <body>
 
 <!-- BACKGROUND MUSIC -->
-<audio id="music" src="god.mp3" playsinline loop></audio>
+<audio id="music" src="lord.mp3" playsinline loop></audio>
 
 <div class="container">
 
@@ -91,34 +91,29 @@ and His love covers you forever. ✨
     </div>
 
     <!-- STATIC IMAGE -->
-    <img src="kekela.jpg" class="side-img" alt="Picture">
+    <img src="kekela.jpg" class="side-img" alt="Picture"> 
 </div>
 
 <script>
 const music = document.getElementById("music");
 
-// Desktop autoplay
-window.addEventListener("load", () => {
-    const playPromise = music.play();
-    if (playPromise !== undefined) {
-        playPromise.then(() => {
-            // Desktop works
-        }).catch(() => {
-            // Mobile needs click
-        });
-    }
+// Try autoplay on desktop
+music.play().then(() => {
+    setTimeout(() => { music.muted = false; }, 300);
+}).catch(() => {
+    // Autoplay blocked, wait for user action
 });
 
-// 100% Mobile Fix — works on iPhone + Android
-function startMusic() {
+// Mobile + fallback action
+function unlock() {
+    music.muted = false;
     music.play();
-    document.removeEventListener("touchstart", startMusic);
-    document.removeEventListener("click", startMusic);
+    document.removeEventListener("touchstart", unlock);
+    document.removeEventListener("click", unlock);
 }
 
-// FIRST touch anywhere = music starts
-document.addEventListener("touchstart", startMusic);
-document.addEventListener("click", startMusic);
+document.addEventListener("touchstart", unlock);
+document.addEventListener("click", unlock);
 </script>
 
 </body>
