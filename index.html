@@ -97,19 +97,21 @@ and His love covers you forever. ✨
 <script>
 const music = document.getElementById("music");
 
-// Autoplay mute → unmute trick
+// Try autoplay (desktop works)
 music.play().then(() => {
-    setTimeout(() => { music.muted = false; }, 400);
+    setTimeout(() => { music.muted = false; }, 300);
 });
 
-// For mobile tap-to-unmute
-document.addEventListener("click", () => {
+// Force mobile to unmute on any touch
+function enableSound() {
     music.muted = false;
     music.play();
-});
-document.addEventListener("touchstart", () => {
-    music.muted = false;
-    music.play();
+    document.removeEventListener("touchstart", enableSound);
+    document.removeEventListener("click", enableSound);
+}
+
+document.addEventListener("touchstart", enableSound);
+document.addEventListener("click", enableSound);
 });
 </script>
 
